@@ -1,0 +1,18 @@
+.title-add {
+  color: #585858;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.form-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.input-invalid {
+  border-color: red;
+}
+
+.help-text {
+  color: red;
+}
+

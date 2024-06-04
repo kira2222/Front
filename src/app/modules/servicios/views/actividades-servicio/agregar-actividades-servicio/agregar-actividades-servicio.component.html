@@ -1,0 +1,156 @@
+<div class="container mt-3">
+  <h3 class="title-add">Agregar actividad de servicio</h3>
+  <c-card class="border border-light">
+    <c-card-body>
+      <form
+        [formGroup]="formulario"
+        (ngSubmit)="onSubmit()"
+        class="row p-2 form-container"
+      >
+        <div class="row form-row-container">
+          <div class="col-md">
+            <label for="basic-url" class="form-label">Descripción</label>
+            <div class="input-group">
+              <input
+                required
+                type="text"
+                id="description"
+                class="form-control"
+                formControlName="description"
+                placeholder="Ingresa la descripción"
+                [ngClass]="{
+                  'input-invalid':
+                    formulario.get('description')?.touched &&
+                    formulario.get('description')?.invalid
+                }"
+              />
+            </div>
+            <div
+              class="help-text"
+              *ngIf="
+                formulario.get('description')?.touched &&
+                formulario.get('description')?.invalid
+              "
+            >
+              <small *ngIf="formulario.get('description').errors?.required"
+                >Este campo es requerido</small
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row form-row-container">
+          <div class="col-md">
+            <label for="basic-url" class="form-label">Prioridad</label>
+            <div class="input-group">
+              <select
+                required
+                id="priority"
+                class="form-select"
+                formControlName="priority"
+                [ngClass]="{
+                  'input-invalid':
+                    formulario.get('priority')?.touched &&
+                    formulario.get('priority')?.invalid
+                }"
+              >
+                <option value="" selected>-- Selecciona la prioridad --</option>
+                <option value="ALTA">ALTA</option>
+                <option value="MEDIA">MEDIA</option>
+                <option value="BAJA">BAJA</option>
+              </select>
+            </div>
+            <div
+              class="help-text"
+              *ngIf="
+                formulario.get('priority')?.touched &&
+                formulario.get('priority')?.invalid
+              "
+            >
+              <small *ngIf="formulario.get('priority').errors?.required"
+                >Este campo es requerido</small
+              >
+            </div>
+          </div>
+          <div class="col-md">
+            <label for="basic-url" class="form-label">Estado</label>
+            <div class="input-group">
+              <select
+                required
+                id="status"
+                class="form-select"
+                formControlName="status"
+                [ngClass]="{
+                  'input-invalid':
+                    formulario.get('status')?.touched &&
+                    formulario.get('status')?.invalid
+                }"
+              >
+                <option value="" selected>-- Selecciona el estado --</option>
+                <option value="PENDIENTE">PENDIENTE</option>
+                <option value="PROGRESO">PROGRESO</option>
+                <option value="COMPLETADA">COMPLETADA</option>
+                <option value="CANCELADA">CANCELADA</option>
+              </select>
+            </div>
+            <div
+              class="help-text"
+              *ngIf="
+                formulario.get('status')?.touched &&
+                formulario.get('status')?.invalid
+              "
+            >
+              <small *ngIf="formulario.get('status').errors?.required"
+                >Este campo es requerido</small
+              >
+            </div>
+          </div>
+          <div class="col-md">
+            <label for="basic-url" class="form-label"
+              >Fecha de Finalización de Garantía</label
+            >
+            <div class="input-group">
+              <input
+                required
+                type="date"
+                id="warrantyEndDate"
+                class="form-control"
+                formControlName="warrantyEndDate"
+                [ngClass]="{
+                  'input-invalid':
+                    formulario.get('warrantyEndDate')?.touched &&
+                    formulario.get('warrantyEndDate')?.invalid
+                }"
+              />
+            </div>
+            <div
+              class="help-text"
+              *ngIf="
+                formulario.get('warrantyEndDate')?.touched &&
+                formulario.get('warrantyEndDate')?.invalid
+              "
+            >
+              <small *ngIf="formulario.get('warrantyEndDate').errors?.required"
+                >Este campo es requerido</small
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row form-row-container mt-3">
+          <div class="col-md d-flex gap-3">
+            <button type="submit" class="btn btn-primary text-light">
+              Agregar Actividad
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary text-white"
+              routerLink="/servicios/actividades-servicio"
+              routerLinkActive="active"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </form>
+    </c-card-body>
+  </c-card>
+</div>
