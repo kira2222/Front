@@ -4,13 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
-import { LoginComponent } from './views/pages/login/login.component';
+// import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+// import { LoginComponent } from './modules/login/views/login.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'inicio-sesion',
     pathMatch: 'full',
   },
   {
@@ -28,13 +29,11 @@ const routes: Routes = [
         },
       },
       {
-        path: 'servicios',
+        path: 'ordenes-trabajo',
         loadChildren: () =>
-          import('./modules/servicios/servicios.module').then(
-            (m) => m.ServiciosModule
-          ),
+          import('./modules/orders/orders.module').then((m) => m.OrdersModule),
         data: {
-          title: 'Servicios / Actividades de Servicio',
+          title: 'Ordenes de Trabajo',
         },
       },
       {
@@ -102,10 +101,11 @@ const routes: Routes = [
     },
   },
   {
-    path: 'login',
-    component: LoginComponent,
+    path: 'inicio-sesion',
+    loadChildren: () =>
+      import('./modules/login/login.module').then((m) => m.LoginModule),
     data: {
-      title: 'Login Page',
+      title: 'Inicio de sesión',
     },
   },
   {

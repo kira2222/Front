@@ -1,0 +1,142 @@
+<div class="container mt-3">
+  <div class="options-top-container">
+    <div class="action-buttons">
+      <button
+        type="button"
+        class="btn btn-primary text-light"
+        routerLink="agregar"
+        routerLinkActive="active"
+      >
+        Agregar
+        <svg cIcon name="cil-plus" size="xs"></svg>
+      </button>
+      <button
+        type="button"
+        class="btn btn-info text-light"
+        onclick="alert('Importar')"
+      >
+        Importar
+        <svg cIcon name="cil-arrow-thick-from-bottom" size="xs"></svg>
+      </button>
+    </div>
+    <div class="action-buttons" *ngIf="orders.length > 0">
+      <div class="input-search">
+        <c-input-group>
+          <input type="text" cFormControl placeholder="Buscar..." />
+          <button cButton color="secondary" type="button" class="search-button">
+            <svg cIcon name="cil-search" size="xs"></svg>
+          </button>
+        </c-input-group>
+      </div>
+      <button
+        type="button"
+        class="btn btn-primary text-light"
+        onclick="alert('Filtrar')"
+      >
+        <svg cIcon name="cil-filter" size="xs"></svg>
+      </button>
+    </div>
+  </div>
+  <c-card class="border border-light">
+    <c-card-body *ngIf="orders.length > 0">
+      <table bordered cTable>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Observaciones</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Cobro Total</th>
+            <th scope="col">Fecha de Creación</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orders">
+            <th scope="row">{{ item.id }}</th>
+            <td>{{ item.clientName }}</td>
+            <td>{{ item.observations }}</td>
+            <td>{{ item.statusName }}</td>
+            <td>{{ item.totalCharged }}</td>
+            <td>{{ item.createdAt }}</td>
+            <td class="actions-container">
+              <div class="action-buttons">
+                <div
+                  class="button-item"
+                  routerLink="editar/{{ item.id }}"
+                  routerLinkActive="active"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Editar"
+                >
+                  <svg cIcon name="cilPencil" size="lg" class="text-info"></svg>
+                </div>
+
+                <div
+                  class="button-item"
+                  onclick="alert('Detalles')"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Ver detalles"
+                >
+                  <svg
+                    cIcon
+                    name="cilInfo"
+                    size="lg"
+                    class="text-success"
+                  ></svg>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="table-options">
+        <span class="number-service-activities"
+          >{{ totalRecords }} orden de trabajo</span
+        >
+        <nav aria-label="Table pagination">
+          <ul class="pagination">
+            <li class="page-item disabled">
+              <a class="page-link">Anterior</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="/#/servicios/actividades-servicio"
+                >1</a
+              >
+            </li>
+            <li class="page-item" aria-current="page">
+              <a class="page-link" href="/#/servicios/actividades-servicio"
+                >2</a
+              >
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="/#/servicios/actividades-servicio"
+                >3</a
+              >
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="/#/servicios/actividades-servicio"
+                >Siguiente</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </c-card-body>
+    <c-card-body *ngIf="orders.length === 0 && errorMessage === ''">
+      <div class="no-data-found-container">
+        <svg cIcon name="cilFindInPage" size="4xl"></svg>
+        <h2>No hay registros</h2>
+        <p>
+          Para añadir nuevas actividades de servicio, click en
+          <span class="text-primary">Añadir</span> o
+          <span class="text-info">Importar</span>
+        </p>
+      </div>
+    </c-card-body>
+    <c-card-body *ngIf="errorMessage != ''" class="error-container">
+      <c-alert color="danger">{{ errorMessage }}</c-alert>
+    </c-card-body>
+  </c-card>
+</div>

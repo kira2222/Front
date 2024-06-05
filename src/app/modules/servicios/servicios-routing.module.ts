@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ActividadesServicioComponent } from './views/actividades-servicio/actividades-servicio.component';
 import { AgregarActividadesServicioComponent } from './views/actividades-servicio/agregar-actividades-servicio/agregar-actividades-servicio.component';
 import { EditarActividadesServicioComponent } from './views/actividades-servicio/editar-actividades-servicio/editar-actividades-servicio.component';
+import { OrderServicesComponent } from './views/order-services/order-services.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,13 @@ const routes: Routes = [
       {
         path: 'actividades-servicio',
         component: ActividadesServicioComponent,
+        data: {
+          title: 'Servicios / Actividades de Servicio',
+        },
+      },
+      {
+        path: 'ordenes-servicio',
+        component: OrderServicesComponent,
         data: {
           title: 'Servicios / Actividades de Servicio',
         },

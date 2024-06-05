@@ -2,6 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 // CoreUI Modules
 import {
@@ -32,23 +37,25 @@ import {
 
 import { IconModule } from '@coreui/icons-angular';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 
 // [Views]
-import { ActividadesServicioComponent } from './views/actividades-servicio/actividades-servicio.component';
-import { AgregarActividadesServicioComponent } from './views/actividades-servicio/agregar-actividades-servicio/agregar-actividades-servicio.component';
-import { EditarActividadesServicioComponent } from './views/actividades-servicio/editar-actividades-servicio/editar-actividades-servicio.component';
-
-import { OrderServicesComponent } from './views/order-services/order-services.component';
+import { OrdersComponent } from './views/orders.component';
+import { AddOrdersComponent } from './views/add-orders/add-orders.component';
 
 // [Views routing]
-import { ServiciosRoutingModule } from './servicios-routing.module';
+import { OrdersRoutingModule } from './orders-routing.module';
+
+// [Pipes]
+import { PriceFormatPipe } from './pipes/price-format.pipe';
 
 @NgModule({
   imports: [
     CommonModule,
-    ServiciosRoutingModule,
+    OrdersRoutingModule,
     AccordionModule,
     BadgeModule,
     BreadcrumbModule,
@@ -66,6 +73,8 @@ import { ServiciosRoutingModule } from './servicios-routing.module';
     SpinnerModule,
     TabsModule,
     NavModule,
+    MatSnackBarModule,
+    MatButtonModule,
     TooltipModule,
     CarouselModule,
     FormModule,
@@ -79,12 +88,14 @@ import { ServiciosRoutingModule } from './servicios-routing.module';
     MatDialogModule,
     FormsModule,
     AlertComponent,
+    HttpClientModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    NgSelectModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
-  declarations: [
-    ActividadesServicioComponent,
-    AgregarActividadesServicioComponent,
-    EditarActividadesServicioComponent,
-    OrderServicesComponent,
-  ],
+  declarations: [OrdersComponent, AddOrdersComponent, PriceFormatPipe],
+  providers: [provideNgxMask()],
 })
-export class ServiciosModule {}
+export class OrdersModule {}

@@ -35,4 +35,29 @@ export class ActividadesServicioApiService {
       `${environment.apiUrl}/serviceActivity/${id}`
     );
   }
+
+  public createActividadDeServicio(
+    actividadServicio: ActividadServicio
+  ): Observable<ResultMessage<ActividadServicio>> {
+    return this.http.post<ResultMessage<ActividadServicio>>(
+      `${environment.apiUrl}/serviceActivity`,
+      actividadServicio
+    );
+  }
+
+  public updateActividadDeServicio(
+    id: number,
+    actividadServicio: ActividadServicio
+  ): Observable<ResultMessage<ActividadServicio>> {
+    return this.http.put<ResultMessage<ActividadServicio>>(
+      `${environment.apiUrl}/serviceActivity/${id}`,
+      actividadServicio
+    );
+  }
+
+  public deleteActividadDeServicio(id: number): Observable<ResultMessage<any>> {
+    return this.http.delete<ResultMessage<any>>(
+      `${environment.apiUrl}/serviceActivity/${id}`
+    );
+  }
 }

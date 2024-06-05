@@ -26,20 +26,25 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Servicios',
-    url: '/servicios',
+    name: 'Ordenes de trabajo',
+    url: '/ordenes-trabajo',
     iconComponent: { name: 'cil-list' },
-    children: [
-      {
-        name: 'Actividades de Servicio',
-        url: '/servicios/actividades-servicio',
-      },
-      {
-        name: 'Registro de Actividades',
-        url: '/servicios/registro-actividades',
-      },
-    ],
   },
+  // {
+  //   name: 'Servicios',
+  //   url: '/servicios',
+  //   iconComponent: { name: 'cil-list' },
+  //   children: [
+  //     {
+  //       name: 'Actividades de Servicio',
+  //       url: '/servicios/actividades-servicio',
+  //     },
+  //     {
+  //       name: 'Registro de Actividades',
+  //       url: '/servicios/registro-actividades',
+  //     },
+  //   ],
+  // },
   {
     name: 'Paginas',
     url: '/login',

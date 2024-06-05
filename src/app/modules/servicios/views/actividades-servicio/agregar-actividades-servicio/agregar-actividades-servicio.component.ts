@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActividadesServicioApiService } from '../../../services/actividades-servicio-api.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActividadServicio } from '../../../models/ActividadServicio';
 
 @Component({
   templateUrl: 'agregar-actividades-servicio.component.html',
@@ -25,8 +26,7 @@ export class AgregarActividadesServicioComponent {
 
   onSubmit(): void {
     if (this.formulario.valid) {
-      console.log('Formulario válido', this.formulario.value);
-      alert('Formulario válido');
+      const actividadServicio: ActividadServicio = this.formulario.value;
     } else {
       console.log('Formulario inválido');
       this.markFieldsAsTouched(this.formulario);
