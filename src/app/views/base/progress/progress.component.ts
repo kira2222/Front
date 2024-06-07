@@ -1,18 +1,18 @@
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit } from '@angular/core';
-import { SchedulesService } from '../../../shared/services/schedules.service';
-import { OrdersService } from '../../../shared/services/orders.service';
-import { UsersService } from '../../../shared/services/users.service';
+import { SchedulesService } from '../../../services/schedules.service'
+import { OrdersService } from '../../../services/orders.service'
+import { UsersService } from '../../../services/users.service'
 import { Schedule } from '../../Model/Order';
 
 @Component({
   selector: 'app-progress',
   templateUrl: './progress.component.html',
-  styleUrls: ['./progress.component.scss'],
+  styleUrls: ['./progress.component.scss']
 })
 export class ProgressComponent implements OnInit {
-  AgendaForm: FormGroup;
+  AgendaForm: FormGroup;  
   schedule: Schedule;
   currentRowIndex!: number;
   IsCreate = true;
@@ -20,15 +20,10 @@ export class ProgressComponent implements OnInit {
   filteredElements!: any;
   schedulList!: any;
   collection: any;
-  inputValue: string = '';
+  inputValue: string = '';  
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private Orders: OrdersService,
-    private schedules: SchedulesService,
-    private users: UsersService
-  ) {
-    this.schedule = new Schedule(undefined, '', '', 0, 0);
+  constructor(private formBuilder: FormBuilder, private Orders: OrdersService, private schedules: SchedulesService, private users: UsersService) {
+    this.schedule = new Schedule(undefined, '', '', 0, 0)
     this.AgendaForm = this.formBuilder.group({
       id: '',
       idorden: '',
@@ -37,16 +32,19 @@ export class ProgressComponent implements OnInit {
       fecha: '',
       horaF: '',
       cliente: '',
-      direccion: '',
+      direccion: ''
     });
+
+   
   }
 
   ngOnInit() {
-    let email = localStorage.getItem('email');
+    let email = localStorage.getItem('email');    
+    
+    this.schedules.GetSchedulesByUser(email).subscribe(data => {
+      this.schedulList = data ;                     
+    });    
 
-    this.schedules.GetSchedulesByUser(email).subscribe((data) => {
-      this.schedulList = data;
-    });
   }
 
   onEdit(element: any, rowIndex: number) {
@@ -61,29 +59,28 @@ export class ProgressComponent implements OnInit {
       fecha: this.formatDate(element.date),
       horaF: element.hour,
       cliente: element.infoClient,
-      direccion: element.address,
+      direccion: element.address
     });
   }
 
-  newSchedule: any = {
-    id: null,
-    date: '',
-    hour: null,
-    idOrder: '',
-    idUser: null,
-  };
+
+  newSchedule: any = { id: null, date: '', hour: null, idOrder: '', idUser: null };
+
+ 
+
 
   GetTecnico() {
     this.users.gettechnicalByName(this.AgendaForm.value.tecnico).subscribe({
       next: (val: any) => {
         if (!val.message) {
           this.AgendaForm.setValue({
-            id: this.AgendaForm.value.id,
+            id:this.AgendaForm.value.id,
             iduser: val.id,
             tecnico: val.name,
-            fechaadd: this.AgendaForm.value.fecha,
-            horaF: this.AgendaForm.value.horaF,
+            fechaadd: this.AgendaForm.value.fecha,            
+            horaF: this.AgendaForm.value.horaF,            
             idordenadd: this.AgendaForm.value.idorden,
+
           });
           alert('Tecnico seleccinado: ' + val.name);
         } else {
@@ -97,6 +94,7 @@ export class ProgressComponent implements OnInit {
     });
   }
 
+
   GetOrden() {
     this.Orders.GetOrder(this.AgendaForm.value.idorden).subscribe({
       next: (val: any) => {
@@ -105,7 +103,7 @@ export class ProgressComponent implements OnInit {
             idtecnico: this.AgendaForm.value.idtecnico,
             tecnico: this.AgendaForm.value.tecnico,
             fechaadd: this.AgendaForm.value.fecha,
-            horaF: this.AgendaForm.value.horaF,
+            horaF: this.AgendaForm.value.horaF,            
             idorden: this.AgendaForm.value.idordenadd,
           });
           alert('Orden seleccinada ');
@@ -120,26 +118,28 @@ export class ProgressComponent implements OnInit {
     });
   }
 
+
   deleteElement(rowIndex: number) {
     var id = this.schedulList[rowIndex].idSchedule;
     this.schedules.DeleteSchedule(id).subscribe(
-      (deletedUser) => {
+      deletedUser => {
         alert('Se quito la agenda seleccionada');
         this.schedulList.splice(rowIndex, 1);
-        let data = JSON.stringify(this.schedulList);
+        let data = JSON.stringify(this.schedulList)
         localStorage.setItem('agenda', data);
       },
-      (error) => {
+      error => {
         console.log(error);
       }
     );
   }
 
+
   filter(term: string) {
     if (!term) {
       return this.schedulList;
     }
-    return this.schedulList.filter((element: { date: string }) =>
+    return this.schedulList.filter((element: { date: string; }) =>
       element.date.toLowerCase().includes(term.toLowerCase())
     );
   }
@@ -167,26 +167,20 @@ export class ProgressComponent implements OnInit {
     return parts[1];
   }
 
+
   updateSchedule() {
     let schedule;
     let Hora: string;
-    Hora = this.AgendaForm.value.horaF;
-    schedule = new Schedule(
-      this.AgendaForm.value.id,
-      this.AgendaForm.value.fecha,
-      Hora,
-      this.AgendaForm.value.iduser,
-      this.AgendaForm.value.idorden
-    );
+    Hora = this.AgendaForm.value.horaF
+    schedule = new Schedule(this.AgendaForm.value.id, this.AgendaForm.value.fecha, Hora, this.AgendaForm.value.iduser, this.AgendaForm.value.idorden);
 
     if (this.currentRowIndex !== undefined) {
       this.schedules.UpdateSchedule(schedule).subscribe(
-        (updatedSchedule) => {
+        updatedSchedule => {
           console.log('Agenda Actualizada:', updatedSchedule);
-          this.schedulList[this.currentRowIndex].date =
-            this.AgendaForm.value.fecha;
+          this.schedulList[this.currentRowIndex].date = this.AgendaForm.value.fecha;
           this.schedulList[this.currentRowIndex].hour = Hora;
-          let data = JSON.stringify(this.schedulList);
+          let data = JSON.stringify(this.schedulList)
           localStorage.setItem('agenda', data);
           this.AgendaForm = this.formBuilder.group({
             id: '',
@@ -201,7 +195,7 @@ export class ProgressComponent implements OnInit {
             horario: 'AM',
           });
         },
-        (error) => {
+        error => {
           console.error('Error al actualizar Agenda:', error);
           alert('Error al actualizar Agenda');
         }
@@ -213,9 +207,7 @@ export class ProgressComponent implements OnInit {
     const formattedDate = this.inputValue.replace(/\//g, '-');
     if (formattedDate) {
       // Define the link URL with the formatted date
-      const linkUrl = `http://localhost:8080/api/schedules/download/reporte.xlsx?date=${encodeURIComponent(
-        formattedDate
-      )}`;
+      const linkUrl = `http://localhost:8080/api/schedules/download/reporte.xlsx?date=${encodeURIComponent(formattedDate)}`;
       // Redirect to the link URL
       window.location.href = linkUrl;
     } else {

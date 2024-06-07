@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { customerService } from '../../../shared/services/customer.service';
-import { UsersService } from '../../../shared/services/users.service';
-import { OrdersService } from '../../../shared/services/orders.service';
+import { HttpClient } from '@angular/common/http'
+import { customerService } from '../../../services/customer.service'
+import { UsersService } from '../../../services/users.service'
+import { OrdersService } from '../../../services/orders.service'
 import { Order, Schedule, Services, client } from '../../Model/Order';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accordions',
   templateUrl: './accordions.component.html',
-  styleUrls: ['./accordions.component.scss'],
+  styleUrls: ['./accordions.component.scss']
 })
 export class AccordionsComponent {
   order: Order;
@@ -23,22 +23,14 @@ export class AccordionsComponent {
   error: '';
 
   //Url para CR endpoint
-  private urlCR: string =
-    'https://mocki.io/v1/5a60db03-dc07-48be-90f8-57eeb7f7f10c';
+  private urlCR: string = 'https://mocki.io/v1/5a60db03-dc07-48be-90f8-57eeb7f7f10c';
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private Orders: OrdersService,
-    private users: UsersService,
-    private customers: customerService,
-    private http: HttpClient,
-    private router: Router
-  ) {
+  constructor(private formBuilder: FormBuilder, private Orders: OrdersService, private users: UsersService, private customers: customerService, private http: HttpClient, private router: Router,) {
     this.error = '';
     this.order = new Order(0, [], '', '', 0, undefined);
-    this.schedules = new Schedule(undefined, '', '', 0, 0);
+    this.schedules = new Schedule(undefined, '', '', 0, 0)
     this.service = new Services(undefined, '', '', 0);
-    this.client = new client('', '', 0, 0, 0, '', '', '', '', '');
+    this.client = new client('', '', 0, 0, 0, '', '', '', '', '')
     this.OrderForm = this.formBuilder.group({
       telefono: ['', Validators.required],
       nombres: ['', Validators.required],
@@ -49,7 +41,7 @@ export class AccordionsComponent {
       telefono2: '',
       solicitante: '',
       idOrdenProveedor: '',
-      type: ['', Validators.required],
+      type: ['', Validators.required]
     });
 
     this.ServiceForm = this.formBuilder.group({
@@ -64,18 +56,22 @@ export class AccordionsComponent {
       servicet2: '',
       servicet3: '',
       estado: '',
-      observations: '',
+      observations: ''
     });
 
     this.AgendaForm = this.formBuilder.group({
       tecnico: ['', Validators.required],
       idtecnico: '',
       fecha: ['', Validators.required],
-      hora: ['', Validators.required],
+      hora: ['', Validators.required]
     });
+
+
   }
 
-  Ejecuta() {}
+  Ejecuta() {
+
+  }
 
   FindClient() {
     this.customers.GetCustomer(this.OrderForm.value.telefono).subscribe({
@@ -91,7 +87,7 @@ export class AccordionsComponent {
             direccion: val.address,
             solicitante: val.nameOfApplicant,
             idOrdenProveedor: val.numberOrderVendor,
-            type: val.type,
+            type: val.type
           });
         } else {
           this.OrderForm.setValue({
@@ -133,7 +129,7 @@ export class AccordionsComponent {
             idtecnico: val.id,
             tecnico: val.name,
             fecha: this.AgendaForm.value.fecha,
-            hora: this.AgendaForm.value.hora,
+            hora: this.AgendaForm.value.hora
           });
           alert('Tecnico seleccinado: ' + val.name);
         } else {
@@ -150,7 +146,7 @@ export class AccordionsComponent {
   getInvalidFieldsAgenda(): string[] {
     const invalidFields: string[] = [];
 
-    Object.keys(this.AgendaForm.controls).forEach((field) => {
+    Object.keys(this.AgendaForm.controls).forEach(field => {
       const control = this.AgendaForm.get(field);
       if (control?.invalid) {
         invalidFields.push(field);
@@ -160,10 +156,11 @@ export class AccordionsComponent {
     return invalidFields;
   }
 
+
   getInvalidFieldsOrder(): string[] {
     const invalidFields: string[] = [];
 
-    Object.keys(this.OrderForm.controls).forEach((field) => {
+    Object.keys(this.OrderForm.controls).forEach(field => {
       const control = this.OrderForm.get(field);
       if (control?.invalid) {
         invalidFields.push(field);
@@ -175,7 +172,7 @@ export class AccordionsComponent {
   getInvalidFieldsServices(): string[] {
     const invalidFields: string[] = [];
 
-    Object.keys(this.ServiceForm.controls).forEach((field) => {
+    Object.keys(this.ServiceForm.controls).forEach(field => {
       const control = this.ServiceForm.get(field);
       if (control?.invalid) {
         invalidFields.push(field);
@@ -185,21 +182,12 @@ export class AccordionsComponent {
     return invalidFields;
   }
 
+
   onSubmit() {
-    if (
-      !this.AgendaForm.valid ||
-      !this.OrderForm.valid ||
-      !this.ServiceForm.valid
-    ) {
-      alert(
-        'Por favor llene los campos requeridos: ' +
-          this.getInvalidFieldsAgenda() +
-          ' ' +
-          this.getInvalidFieldsOrder() +
-          ' ' +
-          this.getInvalidFieldsServices()
-      );
+    if (!this.AgendaForm.valid || !this.OrderForm.valid || !this.ServiceForm.valid) {
+      alert('Por favor llene los campos requeridos: ' + this.getInvalidFieldsAgenda() + ' ' + this.getInvalidFieldsOrder() + ' ' + this.getInvalidFieldsServices());
     } else {
+
       let servicesArray: Services[] = [];
       let data = [];
       let cliente;
@@ -210,45 +198,11 @@ export class AccordionsComponent {
       let totalCharged = 0;
       let salta = false;
 
-      cliente = new client(
-        this.OrderForm.value.documento,
-        this.OrderForm.value.nombres,
-        this.OrderForm.value.telefono,
-        this.OrderForm.value.telefono1,
-        this.OrderForm.value.telefono2,
-        this.OrderForm.value.correo,
-        this.OrderForm.value.direccion,
-        this.OrderForm.value.solicitante,
-        this.OrderForm.value.idOrdenProveedor,
-        this.OrderForm.value.type
-      );
-      service1 = new Services(
-        undefined,
-        this.ServiceForm.value.typeservice1,
-        this.ServiceForm.value.serviced1,
-        parseFloat(this.ServiceForm.value.servicet1)
-      );
-      schedules = new Schedule(
-        undefined,
-        this.AgendaForm.value.fecha,
-        this.AgendaForm.value.hora,
-        parseFloat(this.AgendaForm.value.idtecnico),
-        parseFloat(this.ServiceForm.value.NumeroOrden)
-      );
-      if (this.ServiceForm.value.serviced2)
-        service2 = new Services(
-          undefined,
-          this.ServiceForm.value.typeservice2,
-          this.ServiceForm.value.serviced2,
-          parseFloat(this.ServiceForm.value.servicet2)
-        );
-      if (this.ServiceForm.value.serviced3)
-        service3 = new Services(
-          undefined,
-          this.ServiceForm.value.typeservice3,
-          this.ServiceForm.value.serviced3,
-          parseFloat(this.ServiceForm.value.servicet3)
-        );
+      cliente = new client(this.OrderForm.value.documento, this.OrderForm.value.nombres, this.OrderForm.value.telefono, this.OrderForm.value.telefono1, this.OrderForm.value.telefono2, this.OrderForm.value.correo, this.OrderForm.value.direccion, this.OrderForm.value.solicitante, this.OrderForm.value.idOrdenProveedor, this.OrderForm.value.type);
+      service1 = new Services(undefined, this.ServiceForm.value.typeservice1, this.ServiceForm.value.serviced1, parseFloat(this.ServiceForm.value.servicet1));
+      schedules = new Schedule(undefined, this.AgendaForm.value.fecha, this.AgendaForm.value.hora, parseFloat(this.AgendaForm.value.idtecnico), parseFloat(this.ServiceForm.value.NumeroOrden))
+      if (this.ServiceForm.value.serviced2) service2 = new Services(undefined, this.ServiceForm.value.typeservice2, this.ServiceForm.value.serviced2, parseFloat(this.ServiceForm.value.servicet2));
+      if (this.ServiceForm.value.serviced3) service3 = new Services(undefined, this.ServiceForm.value.typeservice3, this.ServiceForm.value.serviced3, parseFloat(this.ServiceForm.value.servicet3));
       if (service1 && service2 && service3) {
         servicesArray = [service1, service2, service3];
         totalCharged = service1.price + service2.price + service3.price;
@@ -263,20 +217,13 @@ export class AccordionsComponent {
         totalCharged = service1.price;
         servicesArray = [service1];
       }
-      let order = new Order(
-        parseFloat(this.ServiceForm.value.NumeroOrden),
-        servicesArray,
-        this.ServiceForm.value.estado,
-        this.ServiceForm.value.observations,
-        totalCharged,
-        undefined
-      );
-      data = [{ client: cliente, order: order, schedules: schedules }];
+      let order = new Order(parseFloat(this.ServiceForm.value.NumeroOrden), servicesArray, this.ServiceForm.value.estado, this.ServiceForm.value.observations, totalCharged, undefined)
+      data = [{ client: cliente, "order": order, "schedules": schedules }];
       this.Orders.Saveorders(data[0]).subscribe({
         next: (val: any) => {
-          val.message;
+          val.message
           this.router.navigateByUrl('/dashboard');
-          alert(val.message);
+          alert(val.message)
         },
         error: (err: any) => {
           alert(err.message);

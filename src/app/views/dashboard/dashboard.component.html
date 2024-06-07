@@ -4,39 +4,82 @@
   <div class="row mb-3">
     <div class="col-md-12">
       <label for="filter" class="form-label">Filtrar</label>
-      <input class="form-control"  placeholder="Buscar" #input>
+      <input class="form-control" placeholder="Buscar" #input>
     </div>
   </div>
-
   <div class="table-responsive">
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Id Orden</th>
-          <th>Cliente</th>
-          <th>Observaciones</th>
-          <th>Estado</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of dataSource.data; let i = index  ">
-          <td>{{ row.id }}</td>
-          <td>{{ row.infoClient }}</td>
-          <td [innerHTML]="row.observations">
-          </td>
-          <td>{{ row.status }}</td>
-          <td>{{ row.totalCharged }}</td>
-          <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal"
-              (click)="onEdit(row,i)">✏️</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
+    <div class="table-container">
+        <table class="table table-hover">
+            <thead class="thead-light">
+              <div class="table-responsive">
+                <div class="table-container">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Id Orden</th>
+                                <th>Cliente</th>
+                                <th>Observaciones</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                <th>Fecha de Creación</th>
+                                <th>Fecha de Actualización</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#9834657</td>
+                                <td>Jerry Mattedi</td>
+                                <td>Ninguna</td>
+                                <td>Aplazado</td>
+                                <td>$300000</td>
+                                <td>2023-06-01</td>
+                                <td>2023-06-05</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal">✏️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#9834658</td>
+                                <td>Elianora Vasilov</td>
+                                <td>Ninguna</td>
+                                <td>Completado</td>
+                                <td>$150000</td>
+                                <td>2023-06-02</td>
+                                <td>2023-06-06</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal">✏️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#9834659</td>
+                                <td>Alvis Daen</td>
+                                <td>Ninguna</td>
+                                <td>Completado</td>
+                                <td>$110000</td>
+                                <td>2023-06-03</td>
+                                <td>2023-06-07</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal">✏️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#9834660</td>
+                                <td>Lissa Shipsey</td>
+                                <td>Ninguna</td>
+                                <td>Completado</td>
+                                <td>$90000</td>
+                                <td>2023-06-04</td>
+                                <td>2023-06-08</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal">✏️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          
   <!-- Pagination -->
   <div class="d-flex justify-content-end">
     <nav aria-label="Page navigation">
@@ -47,8 +90,7 @@
       </ul>
     </nav>
   </div>
-  <div class="modal fade" id="createNewModal" tabindex="-1" role="dialog" aria-labelledby="autoSizeModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="createNewModal" tabindex="-1" role="dialog" aria-labelledby="autoSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <!-- Your modal content goes here -->
@@ -59,7 +101,6 @@
           </button>
         </div>
         <div class="modal-body card">
-
           <form [formGroup]="ServiceForm">
             <div class="row" style="border-bottom: 2px solid gray; margin-bottom: 15px; padding-bottom: 15px;">
               <div class="col-md-6">
@@ -166,11 +207,9 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <div style="text-align: center;">
-                    <label for=" observations" style="font-weight:bolder; font-size: 14px; margin-bottom: -5%">
-                      Observaciones:</label>
+                    <label for="observations" style="font-weight:bolder; font-size: 14px; margin-bottom: -5%">Observaciones:</label>
                   </div>
-                  <textarea style="width: 100%; margin-bottom: -2%" formControlName="observations" id="observations"
-                    class="form-control" name="comentarios" rows="3">Escribe aquí tus comentarios</textarea>
+                  <textarea style="width: 100%; margin-bottom: -2%" formControlName="observations" id="observations" class="form-control" name="comentarios" rows="3">Escribe aquí tus comentarios</textarea>
                 </div>
               </div>
             </div>
@@ -183,3 +222,36 @@
       </div>
     </div>
   </div>
+
+<style>
+  .table-container {
+    background-color: #e7edf3;
+    padding: 20px;
+    border-radius: 15px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .table-container table {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .table-container th, .table-container td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  .table-container th {
+    background-color: #e0e0e0;
+  }
+  .table-container tr:last-child td {
+    border-bottom: none;
+  }
+  .table-container .options a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  .table-container .options a:hover {
+    text-decoration: underline;
+  }
+</style>

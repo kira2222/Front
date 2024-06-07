@@ -10,11 +10,11 @@ import {
   DropdownModule,
   GridModule,
   NavbarModule,
-  NavModule,
+  NavModule
 } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from '../../../../icons/icon-subset';
-import { DocsComponentsModule } from '../../../../../components';
+import { iconSubset } from '../../../icons/icon-subset';
+import { DocsComponentsModule } from '../../../../components';
 import { DropdownsComponent } from './dropdowns.component';
 
 describe('DropdownsComponent', () => {
@@ -25,21 +25,10 @@ describe('DropdownsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DropdownsComponent],
-      imports: [
-        ButtonModule,
-        DropdownModule,
-        CollapseModule,
-        NoopAnimationsModule,
-        GridModule,
-        CardModule,
-        DocsComponentsModule,
-        RouterTestingModule,
-        NavModule,
-        NavbarModule,
-        ButtonGroupModule,
-      ],
-      providers: [IconSetService],
-    }).compileComponents();
+      imports: [ButtonModule, DropdownModule, CollapseModule, NoopAnimationsModule, GridModule, CardModule, DocsComponentsModule, RouterTestingModule, NavModule, NavbarModule, ButtonGroupModule],
+      providers: [IconSetService]
+    })
+      .compileComponents();
   });
 
   beforeEach(() => {

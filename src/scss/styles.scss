@@ -27,13 +27,3 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
-
-.green-snackbar {
-  --mdc-snackbar-container-color: rgb(0, 145, 0);
-  --mdc-snackbar-supporting-text-color: white !important;
-}
-
-.red-snackbar {
-  --mdc-snackbar-container-color: #bb0c00;
-  --mdc-snackbar-supporting-text-color: white !important;
-}

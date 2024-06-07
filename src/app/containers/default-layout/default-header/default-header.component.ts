@@ -1,46 +1,27 @@
-import { Component, Input, HostListener, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Component, Input, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { ClassToggleService, HeaderComponent } from '@coreui/angular';
-import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-default-header',
   templateUrl: './default-header.component.html',
-  styleUrls: ['default-header.component.scss'],
 })
-export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
-  @Input() sidebarId: string = 'sidebar';
-  pageTitle: string = '';
+export class DefaultHeaderComponent extends HeaderComponent {
+
+  @Input() sidebarId: string = "sidebar";
 
   public newMessages = new Array(4);
   public newTasks = new Array(5);
   public newNotifications = new Array(5);
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router) {
     super();
-  }
-
-  ngOnInit(): void {
-    this.updatePageTitle();
-
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.updatePageTitle();
-      });
   }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event: any) {
     // Prevent the default behavior of the back button
     history.pushState(null, document.title, window.location.href);
-  }
-
-  updatePageTitle() {
-    this.activatedRoute.url.subscribe(() => {
-      this.pageTitle =
-        this.activatedRoute.snapshot.firstChild?.data['title'] || '';
-    });
   }
 
   logout() {
@@ -53,5 +34,6 @@ export class DefaultHeaderComponent extends HeaderComponent implements OnInit {
     // Navigate to the login page
     this.router.navigate(['/login']);
     window.location.href = window.location.origin;
+
   }
 }

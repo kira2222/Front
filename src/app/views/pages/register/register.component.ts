@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../../../shared/services/users.service';
+import { UsersService } from '../../../services/users.service'
 import { Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AfterViewInit, OnDestroy } from '@angular/core';
 import { Customer } from '../../Model/Customer';
@@ -15,9 +10,10 @@ import { Users } from '../../Model/Users';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
   formSubmitted = false;
   roleOptions: string[] = ['ADMIN', 'TECNICO', 'Call Center']; // Declare roleOptions here
   error = '';
@@ -29,22 +25,22 @@ export class RegisterComponent implements OnInit {
   filteredElements!: any;
   userList!: Users[];
   collection: any;
-  constructor(
-    private formBuilder: FormBuilder,
-    private UsersService: UsersService,
-    private router: Router
-  ) {
+  constructor(private formBuilder: FormBuilder, private UsersService: UsersService, private router: Router) {
+
+
     this.userForm = this.formBuilder.group({
       id: '',
       name: '',
       password: '',
       email: '',
-      type: 'Seleccione',
+      type: 'Seleccione'
     });
   }
 
+
+
   ngOnInit() {
-    this.UsersService.GetUsers().subscribe((data) => {
+    this.UsersService.GetUsers().subscribe(data => {
       this.userList = data;
     });
     this.filteredElements = this.userList; // Inicialmente, todos los elementos son visibles.
@@ -67,7 +63,7 @@ export class RegisterComponent implements OnInit {
       name: element.name,
       password: element.password,
       email: element.email,
-      type: element.type,
+      type: element.type
     });
   }
 
@@ -79,7 +75,7 @@ export class RegisterComponent implements OnInit {
       name: '',
       password: '',
       email: '',
-      type: 'Seleccione',
+      type: 'Seleccione'
     });
   }
 
@@ -87,15 +83,13 @@ export class RegisterComponent implements OnInit {
 
   createNew() {
     this.newUser = {
-      name: this.userForm.value.name,
-      password: this.userForm.value.password,
-      email: this.userForm.value.email,
-      type: this.userForm.value.type,
+      name: this.userForm.value.name, password: this.userForm.value.password,
+      email: this.userForm.value.email, type: this.userForm.value.type
     };
     this.UsersService.SaveUser(this.newUser).subscribe(
-      (createdUser) => {
+      createdUser => {
         alert('Usuario creado!');
-        this.UsersService.GetUsers().subscribe((data) => {
+        this.UsersService.GetUsers().subscribe(data => {
           this.userList = data;
         });
         this.userForm = this.formBuilder.group({
@@ -103,22 +97,21 @@ export class RegisterComponent implements OnInit {
           name: '',
           password: '',
           email: '',
-          type: 'Seleccione',
+          type: 'Seleccione'
         });
       },
-      (error) => {
+      error => {
         console.error('Error al crear el cliente:', error);
       }
     );
   }
 
+
   updateUser() {
     if (this.currentRowIndex !== undefined) {
       this.userList[this.currentRowIndex] = this.userForm.value;
-      this.UsersService.UpdateUser(
-        this.userList[this.currentRowIndex]
-      ).subscribe(
-        (updatedUser) => {
+      this.UsersService.UpdateUser(this.userList[this.currentRowIndex]).subscribe(
+        updatedUser => {
           console.log('Cliente actualizado:', updatedUser);
           this.userList[this.currentRowIndex] = this.userForm.value;
           this.userForm = this.formBuilder.group({
@@ -128,40 +121,43 @@ export class RegisterComponent implements OnInit {
             address: '',
             phone: '',
             email: '',
-            type: 'Seleccione',
+            type: 'Seleccione'
           });
         },
-        (error) => {
+        error => {
           console.error('Error al actualizar el cliente:', error);
         }
       );
     }
   }
 
+
   filter(term: string) {
     if (!term) {
       return this.userList; // Si no hay término de búsqueda, muestra todos los elementos
     }
-    return this.userList.filter(
-      (element) => element.name.toLowerCase().includes(term.toLowerCase()) // Ajusta esto según las propiedades de tus elementos
+    return this.userList.filter(element =>
+      element.name.toLowerCase().includes(term.toLowerCase()) // Ajusta esto según las propiedades de tus elementos
     );
   }
 
   deleteElement(index: number) {
     let usId = this.userList[index].id;
     this.UsersService.DeleteUser(usId).subscribe(
-      (deletedUser) => {
+      deletedUser => {
         alert('Usuario Eliminado con exito');
         this.userList.splice(index, 1);
       },
-      (error) => {
+      error => {
         alert('Error al eliminar usuario');
         console.error('Error al eliminar usuario', error);
       }
     );
+
   }
 
   goToPage(pageNumber: number) {
     // Logica para ir a la página específica (si estás usando paginación)
   }
+
 }

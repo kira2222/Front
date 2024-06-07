@@ -4,31 +4,27 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule, ProgressModule, ToastModule } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../../icons/icon-subset';
-import { ToastSampleIconComponent } from './toast-sample-icon.component';
+import { AppToastComponent } from './toast.component';
 
 describe('ToastComponent', () => {
-  let component: ToastSampleIconComponent;
-  let fixture: ComponentFixture<ToastSampleIconComponent>;
+  let component: AppToastComponent;
+  let fixture: ComponentFixture<AppToastComponent>;
   let iconSetService: IconSetService;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ToastSampleIconComponent],
-      imports: [
-        NoopAnimationsModule,
-        ToastModule,
-        ProgressModule,
-        ButtonModule,
-      ],
-      providers: [IconSetService],
-    }).compileComponents();
+      declarations: [AppToastComponent],
+      imports: [NoopAnimationsModule, ToastModule, ProgressModule, ButtonModule],
+      providers: [IconSetService]
+    })
+      .compileComponents();
   }));
 
   beforeEach(() => {
     iconSetService = TestBed.inject(IconSetService);
     iconSetService.icons = { ...iconSubset };
 
-    fixture = TestBed.createComponent(ToastSampleIconComponent);
+    fixture = TestBed.createComponent(AppToastComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

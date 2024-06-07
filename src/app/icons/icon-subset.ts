@@ -84,18 +84,11 @@ import {
   cilTags,
   cilTask,
   cilTrash,
-  cilInfo,
   cilUnderline,
   cilUser,
   cilUserFemale,
   cilUserFollow,
-  cilUserUnfollow,
-  cilExitToApp,
-  cilArrowThickFromBottom,
-  cilPlus,
-  cilFilter,
-  cilSearch,
-  cilFindInPage,
+  cilUserUnfollow
 } from '@coreui/icons';
 
 export const iconSubset = {
@@ -184,18 +177,11 @@ export const iconSubset = {
   cilTags,
   cilTask,
   cilTrash,
-  cilInfo,
   cilUnderline,
   cilUser,
   cilUserFemale,
   cilUserFollow,
-  cilUserUnfollow,
-  cilExitToApp,
-  cilArrowThickFromBottom,
-  cilPlus,
-  cilFilter,
-  cilSearch,
-  cilFindInPage,
+  cilUserUnfollow
 };
 
 export enum IconSubset {
@@ -260,7 +246,6 @@ export enum IconSubset {
   cilMap = 'cilMap',
   cilMediaPlay = 'cilMediaPlay',
   cilMenu = 'cilMenu',
-  cilExitToApp = 'cilExitToApp',
   cilMoon = 'cilMoon',
   cilNotes = 'cilNotes',
   cilOptions = 'cilOptions',
@@ -285,15 +270,9 @@ export enum IconSubset {
   cilTags = 'cilTags',
   cilTask = 'cilTask',
   cilTrash = 'cilTrash',
-  cilInfo = 'cilInfo',
   cilUnderline = 'cilUnderline',
   cilUser = 'cilUser',
   cilUserFemale = 'cilUserFemale',
   cilUserFollow = 'cilUserFollow',
   cilUserUnfollow = 'cilUserUnfollow',
-  cilArrowThickFromBottom = 'cilArrowThickFromBottom',
-  cilPlus = 'cilPlus',
-  cilFilter = 'cilFilter',
-  cilSearch = 'cilSearch',
-  cilFindInPage = 'cilFindInPage',
 }

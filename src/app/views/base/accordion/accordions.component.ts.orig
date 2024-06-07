@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http'
-import { customerService } from '../../../shared/services/customer.service'
-import { UsersService } from '../../../shared/services/users.service'
-import { OrdersService } from '../../../shared/services/orders.service'
+import { customerService } from '../../../services/customer.service'
+import { UsersService } from '../../../services/users.service'
+import { OrdersService } from '../../../services/orders.service'
 import { Order, Schedule, Services, client } from '../../Model/Order';
 import { Router } from '@angular/router';
 
