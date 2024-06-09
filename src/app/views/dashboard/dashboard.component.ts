@@ -1,33 +1,19 @@
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OrdersService } from '../../shared/services/orders.service';
 import { Order, Services } from '../Model/Order';
-import { debounceTime } from 'rxjs/operators';
-
-interface IUser {
-  name: string;
-  state: string;
-  registered: string;
-  country: string;
-  usage: number;
-  period: string;
-  payment: string;
-  activity: string;
-  avatar: string;
-  status: string;
-  color: string;
-}
+import { EChartsOption } from 'echarts';
 
 @Component({
   templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss'],
+  styleUrls: ['dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, AfterViewInit {
   ServiceForm: FormGroup;
-  OrderList!: Order[];
+  OrderList: Order[] = [];
   currentRowIndex!: number;
   displayedColumns: string[] = [
     'id',
@@ -37,149 +23,176 @@ export class DashboardComponent {
     'Estado',
     'action',
   ];
-  dataSource!: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<Order>;
+
+  // Opciones del gráfico de dona
+  public donutChartOptions: EChartsOption = {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      top: '5%',
+      left: 'center'
+    },
+    series: [
+      {
+        name: 'Ordenes',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: true,
+            fontSize: '40',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          { value: 10, name: 'Realizados' },
+          { value: 5, name: 'Aplazados' },
+          { value: 3, name: 'Cancelados' }
+        ]
+      }
+    ]
+  };
+
+  // Opciones del gráfico de barras
+  public barChartOptions: EChartsOption = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    legend: {
+      top: '5%',
+      left: 'center'
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Realizados', 'Aplazados', 'Cancelados']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    series: [
+      {
+        name: 'Ordenes',
+        type: 'bar',
+        data: [10, 5, 3]
+      }
+    ]
+  };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private fb: FormBuilder, private Orders: OrdersService) {
     this.ServiceForm = this.fb.group({
-      NumeroOrden: '',
-      observations: '',
-      idservice1: '',
-      idservice2: '',
-      idservice3: '',
-      typeservice1: 'Seleccione',
-      typeservice2: 'Seleccione',
-      typeservice3: 'Seleccione',
-      serviced1: '',
-      serviced2: '',
-      serviced3: '',
-      servicet1: '',
-      servicet2: '',
-      servicet3: '',
-      status: '',
+      NumeroOrden: ['', Validators.required],
+      observations: [''],
+      idservice1: [''],
+      idservice2: [''],
+      idservice3: [''],
+      typeservice1: ['Seleccione'],
+      typeservice2: ['Seleccione'],
+      typeservice3: ['Seleccione'],
+      serviced1: [''],
+      serviced2: [''],
+      serviced3: [''],
+      servicet1: [''],
+      servicet2: [''],
+      servicet3: [''],
+      status: ['', Validators.required]
     });
 
-    this.Orders.GetOrders().subscribe((data) => {
-      this.OrderList = data;
+    this.dataSource = new MatTableDataSource(this.OrderList);
+  }
+
+  ngOnInit(): void {
+    this.loadOrders();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  private loadOrders(): void {
+    this.Orders.GetOrders().subscribe(data => {
+      this.OrderList = data.map(row => {
+        return { ...row, observations: this.replaceNbspWithBr(row.observations) };
+      });
+      this.dataSource.data = this.OrderList;
+    }, error => {
+      console.error('Error al cargar las órdenes:', error);
     });
   }
 
-  ngAfterViewInit(): void {}
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-  ngOnInit() {
-    this.Orders.GetOrders().subscribe((data) => {
-      this.OrderList = data;
-      if (data.length > 0) {
-        this.OrderList = this.OrderList.map((row) => {
-          return {
-            ...row,
-            observations: this.replaceNbspWithBr(row.observations),
-          };
-        });
-      }
-      this.dataSource = new MatTableDataSource(this.OrderList);
-    });
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
-  onEdit(element: any, rowIndex: number) {
+  onEdit(element: Order, rowIndex: number): void {
     this.currentRowIndex = rowIndex;
     this.ServiceForm.setValue({
       NumeroOrden: element.id,
-
       observations: this.replaceBrWithNewline(element.observations),
       status: element.status,
-      idservice1: element.services.length > 0 ? element?.services[0]?.id : null,
-      idservice2: element.services.length > 1 ? element?.services[1]?.id : null,
-      idservice3: element.services.length > 2 ? element?.services[2]?.id : null,
-      typeservice1:
-        element.services.length > 0
-          ? element?.services[0]?.servicesType
-          : 'Seleccione',
-      serviced1:
-        element.services.length > 0
-          ? element?.services[0]?.servicesDescription
-          : '',
-      servicet1: element.services.length > 0 ? element?.services[0]?.price : '',
-      typeservice2:
-        element.services.length > 1
-          ? element?.services[1]?.servicesType
-          : 'Seleccione',
-      serviced2:
-        element.services.length > 1
-          ? element?.services[1]?.servicesDescription
-          : '',
-      servicet2: element.services.length > 1 ? element?.services[1]?.price : '',
-      typeservice3:
-        element.services.length > 2
-          ? element?.services[2]?.servicesType
-          : 'Seleccione',
-      serviced3:
-        element.services.length > 2
-          ? element.services[2]?.servicesDescription
-          : '',
+      idservice1: element.services.length > 0 ? element.services[0]?.id : '',
+      idservice2: element.services.length > 1 ? element.services[1]?.id : '',
+      idservice3: element.services.length > 2 ? element.services[2]?.id : '',
+      typeservice1: element.services.length > 0 ? element.services[0]?.servicesType : 'Seleccione',
+      serviced1: element.services.length > 0 ? element.services[0]?.servicesDescription : '',
+      servicet1: element.services.length > 0 ? element.services[0]?.price : '',
+      typeservice2: element.services.length > 1 ? element.services[1]?.servicesType : 'Seleccione',
+      serviced2: element.services.length > 1 ? element.services[1]?.servicesDescription : '',
+      servicet2: element.services.length > 1 ? element.services[1]?.price : '',
+      typeservice3: element.services.length > 2 ? element.services[2]?.servicesType : 'Seleccione',
+      serviced3: element.services.length > 2 ? element.services[2]?.servicesDescription : '',
       servicet3: element.services.length > 2 ? element.services[2]?.price : '',
     });
   }
+
   private replaceBrWithNewline(text: string): string {
-    // Reemplaza <br> con un salto de línea
-    return text?.replace(/<br>/g, '').replace(/&nbsp;/g, '') ?? text;
+    return text?.replace(/<br>/g, '\n').replace(/&nbsp;/g, ' ') ?? text;
   }
+
   private replaceNbspWithBr(text: string): string {
-    // Reemplaza &nbsp; con <br> solo si el texto no es nulo ni indefinido
-    return text;
+    return text?.replace(/&nbsp;/g, ' ') ?? text;
   }
 
-  updateOrder() {
+  updateOrder(): void {
     let servicesArray: Services[] = [];
-    let data = [];
-    let service1;
-    let service2;
-    let service3;
-    let salta = false;
     let totalCharged = 0;
-    let observacion = undefined;
+    let observacion = this.ServiceForm.value.observations;
 
-    if (this.ServiceForm.value.serviced1 !== null) {
-      service1 = new Services(
-        this.ServiceForm.value.idservice1,
-        this.ServiceForm.value.typeservice1,
-        this.ServiceForm.value.serviced1,
-        parseFloat(this.ServiceForm.value.servicet1)
-      );
+    if (this.ServiceForm.value.serviced1) {
+      let service1 = new Services(this.ServiceForm.value.idservice1, this.ServiceForm.value.typeservice1, this.ServiceForm.value.serviced1, parseFloat(this.ServiceForm.value.servicet1));
+      servicesArray.push(service1);
+      totalCharged += service1.price;
     }
-    if (this.ServiceForm.value.serviced2)
-      service2 = new Services(
-        this.ServiceForm.value.idservice2,
-        this.ServiceForm.value.typeservice2,
-        this.ServiceForm.value.serviced2,
-        parseFloat(this.ServiceForm.value.servicet2)
-      );
-    if (this.ServiceForm.value.serviced3)
-      service3 = new Services(
-        this.ServiceForm.value.idservice3,
-        this.ServiceForm.value.typeservice3,
-        this.ServiceForm.value.serviced3,
-        parseFloat(this.ServiceForm.value.servicet3)
-      );
-    if (service1 && service2 && service3) {
-      servicesArray = [service1, service2, service3];
-      totalCharged = service1.price + service2.price + service3.price;
-      salta = true;
+    if (this.ServiceForm.value.serviced2) {
+      let service2 = new Services(this.ServiceForm.value.idservice2, this.ServiceForm.value.typeservice2, this.ServiceForm.value.serviced2, parseFloat(this.ServiceForm.value.servicet2));
+      servicesArray.push(service2);
+      totalCharged += service2.price;
     }
-    if (service1 && service2 && !salta) {
-      totalCharged = service1.price + service2.price;
-      servicesArray = [service1, service2];
-      salta = true;
-    }
-    if (service1 && !salta) {
-      totalCharged = service1.price;
-      servicesArray = [service1];
-    }
-
-    if (this.ServiceForm.value.observations != '') {
-      observacion = this.ServiceForm.value.observations;
+    if (this.ServiceForm.value.serviced3) {
+      let service3 = new Services(this.ServiceForm.value.idservice3, this.ServiceForm.value.typeservice3, this.ServiceForm.value.serviced3, parseFloat(this.ServiceForm.value.servicet3));
+      servicesArray.push(service3);
+      totalCharged += service3.price;
     }
 
     let order = new Order(
@@ -187,33 +200,20 @@ export class DashboardComponent {
       servicesArray,
       this.ServiceForm.value.status,
       observacion,
-      undefined,
+      totalCharged,
       this.OrderList[this.currentRowIndex].infoClient
     );
+
     if (this.currentRowIndex !== undefined) {
       this.Orders.UpdateOrders(order).subscribe(
-        (updatedOrder) => {
-          var resultado: any = updatedOrder;
-          this.OrderList[this.currentRowIndex] = this.ServiceForm.value;
-          this.ServiceForm = this.fb.group({
-            NumeroOrden: '',
-            observations: '',
-            typeservice1: 'Seleccione',
-            typeservice2: 'Seleccione',
-            typeservice3: 'Seleccione',
-            serviced1: '',
-            serviced2: '',
-            serviced3: '',
-            servicet1: '',
-            servicet2: '',
-            servicet3: '',
-            status: '',
-          });
-          alert(resultado.message);
-          location.reload();
+        updatedOrder => {
+          this.OrderList[this.currentRowIndex] = { ...order, totalCharged };
+          this.dataSource.data = this.OrderList; // Update data source
+          this.ServiceForm.reset();
+          alert('Orden actualizada correctamente');
         },
-        (error) => {
-          console.error('Error al actualizar el cliente:', error);
+        error => {
+          console.error('Error al actualizar la orden:', error);
         }
       );
     }

@@ -49,6 +49,7 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { StatisticsComponent } from './views/statistics/statistics.component';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -59,7 +60,7 @@ const APP_CONTAINERS = [
 
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, StatisticsComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

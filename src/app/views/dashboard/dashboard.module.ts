@@ -20,6 +20,7 @@ import { ChartjsModule } from '@coreui/angular-chartjs';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 
+
 import { WidgetsModule } from '../widgets/widgets.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -27,6 +28,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { NgxEchartsModule } from 'ngx-echarts';
 @NgModule({
   imports: [
     DashboardRoutingModule,
@@ -51,7 +53,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatSortModule,
     MatToolbarModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    NgxEchartsModule.forRoot({ echarts: () => import('echarts') })
+
   ],
   declarations: [DashboardComponent]
 })

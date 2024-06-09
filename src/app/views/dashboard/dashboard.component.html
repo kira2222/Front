@@ -4,37 +4,24 @@
   <div class="row mb-3">
     <div class="col-md-12">
       <label for="filter" class="form-label">Filtrar</label>
-      <input class="form-control"  placeholder="Buscar" #input>
+      <input class="form-control" placeholder="Buscar" #input (input)="applyFilter($event)">
     </div>
   </div>
 
+  <!-- Gráficas -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <!-- Donut Chart -->
+      <div echarts [options]="donutChartOptions" class="chart-container" style="height: 400px;"></div>
+    </div>
+    <div class="col-md-6">
+      <!-- Bar Chart -->
+      <div echarts [options]="barChartOptions" class="chart-container" style="height: 400px;"></div>
+    </div>
+  </div>
+  
   <div class="table-responsive">
-    <table class="table table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Id Orden</th>
-          <th>Cliente</th>
-          <th>Observaciones</th>
-          <th>Estado</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of dataSource.data; let i = index  ">
-          <td>{{ row.id }}</td>
-          <td>{{ row.infoClient }}</td>
-          <td [innerHTML]="row.observations">
-          </td>
-          <td>{{ row.status }}</td>
-          <td>{{ row.totalCharged }}</td>
-          <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewModal"
-              (click)="onEdit(row,i)">✏️</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+   
   </div>
 
   <!-- Pagination -->
@@ -47,8 +34,8 @@
       </ul>
     </nav>
   </div>
-  <div class="modal fade" id="createNewModal" tabindex="-1" role="dialog" aria-labelledby="autoSizeModalLabel"
-    aria-hidden="true">
+
+  <div class="modal fade" id="createNewModal" tabindex="-1" role="dialog" aria-labelledby="autoSizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <!-- Your modal content goes here -->
@@ -59,7 +46,6 @@
           </button>
         </div>
         <div class="modal-body card">
-
           <form [formGroup]="ServiceForm">
             <div class="row" style="border-bottom: 2px solid gray; margin-bottom: 15px; padding-bottom: 15px;">
               <div class="col-md-6">
@@ -94,7 +80,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md4">
                 <div class="form-group">
                   <label for="serviced1" style="font-weight:bolder; font-size: 14px;">Descripción de Servicio 1:</label>
                   <input formControlName="serviced1" class="form-control" />
@@ -166,11 +152,9 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <div style="text-align: center;">
-                    <label for=" observations" style="font-weight:bolder; font-size: 14px; margin-bottom: -5%">
-                      Observaciones:</label>
+                    <label for="observations" style="font-weight:bolder; font-size: 14px; margin-bottom: -5%">Observaciones:</label>
                   </div>
-                  <textarea style="width: 100%; margin-bottom: -2%" formControlName="observations" id="observations"
-                    class="form-control" name="comentarios" rows="3">Escribe aquí tus comentarios</textarea>
+                  <textarea style="width: 100%; margin-bottom: -2%" formControlName="observations" id="observations" class="form-control" name="comentarios" rows="3">Escribe aquí tus comentarios</textarea>
                 </div>
               </div>
             </div>
@@ -183,3 +167,4 @@
       </div>
     </div>
   </div>
+</div>
