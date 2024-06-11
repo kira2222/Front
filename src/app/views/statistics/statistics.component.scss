@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  padding: 20px;
+  background-color: #f8f9fa;
+
+  .chart-container {
+    margin-bottom: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .calendar-container {
+    margin-bottom: 30px;
+    text-align: center;
+
+    .calendar-label {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .calendar-input {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 5px;
+      font-size: 1rem;
+    }
+  }
+}

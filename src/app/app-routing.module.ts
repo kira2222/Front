@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { StatisticsComponent } from './views/statistics/statistics.component';
 import { DefaultLayoutComponent } from './containers';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
@@ -26,6 +26,16 @@ const routes: Routes = [
           ),
         data: {
           title: 'Dashboard',
+        },
+      },
+      {
+        path: 'estadisticas',
+        loadChildren: () =>
+          import('./views/statistics/statistics.module').then(
+            (m) => m.StatisticsModule
+          ),
+        data: {
+          title: 'Estadísticas',
         },
       },
       {

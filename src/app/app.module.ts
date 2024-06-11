@@ -14,7 +14,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 // Import app component
 import { AppComponent } from './app.component';
-
 // Import containers
 import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
 import { FormsModule } from '@angular/forms';
@@ -49,7 +48,7 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { StatisticsComponent } from './views/statistics/statistics.component';
+import { StatisticsModule } from './views/statistics/statistics.module';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -60,7 +59,7 @@ const APP_CONTAINERS = [
 
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, StatisticsComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -104,12 +103,11 @@ const APP_CONTAINERS = [
     MatButtonModule,
     MatInputModule,
     MatIconModule,
-    
+    StatisticsModule,
     MatPaginatorModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatFormFieldModule
-    
   ],
   providers: [
     {

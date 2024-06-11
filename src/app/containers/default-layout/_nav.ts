@@ -30,21 +30,6 @@ export const navItems: INavData[] = [
     url: '/ordenes-trabajo',
     iconComponent: { name: 'cil-list' },
   },
-  // {
-  //   name: 'Servicios',
-  //   url: '/servicios',
-  //   iconComponent: { name: 'cil-list' },
-  //   children: [
-  //     {
-  //       name: 'Actividades de Servicio',
-  //       url: '/servicios/actividades-servicio',
-  //     },
-  //     {
-  //       name: 'Registro de Actividades',
-  //       url: '/servicios/registro-actividades',
-  //     },
-  //   ],
-  // },
   {
     name: 'Paginas',
     url: '/login',
@@ -71,4 +56,31 @@ export const navItems: INavData[] = [
       },
     ],
   },
+  {
+    name: 'Mis Estadisticas',
+    url: '/estadisticas',
+    iconComponent: { name: 'cil-chart-pie' },
+    badge: {
+      color: 'info',
+      text: 'NEW',
+    },
+  },
 ];
+
+  
+  // {
+  //   name: 'Servicios',
+  //   url: '/servicios',
+  //   iconComponent: { name: 'cil-list' },
+  //   children: [
+  //     {
+  //       name: 'Actividades de Servicio',
+  //       url: '/servicios/actividades-servicio',
+  //     },
+  //     {
+  //       name: 'Registro de Actividades',
+  //       url: '/servicios/registro-actividades',
+  //     },
+  //   ],
+  // },
+ 
