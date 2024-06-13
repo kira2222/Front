@@ -7,6 +7,7 @@ import { Page500Component } from './views/pages/page500/page500.component';
 // import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 // import { LoginComponent } from './modules/login/views/login.component';
+import { ReportesComponent } from './views/reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,13 @@ const routes: Routes = [
           ),
         data: {
           title: 'Estadísticas',
+        },
+      },
+      {
+        path: 'app-reportes',
+        component: ReportesComponent,
+        data: {
+          title: 'Reportes',
         },
       },
       {
@@ -72,11 +80,6 @@ const routes: Routes = [
           import('./views/charts/charts.module').then((m) => m.ChartsModule),
       },
       {
-        path: 'icons',
-        loadChildren: () =>
-          import('./views/icons/icons.module').then((m) => m.IconsModule),
-      },
-      {
         path: 'Clientes',
         loadChildren: () =>
           import('./views/notifications/notifications.module').then(
@@ -95,7 +98,6 @@ const routes: Routes = [
       },
     ],
   },
-
   {
     path: '404',
     component: Page404Component,

@@ -60,11 +60,22 @@ export const navItems: INavData[] = [
     name: 'Mis Estadisticas',
     url: '/estadisticas',
     iconComponent: { name: 'cil-chart-pie' },
+    children: [
+      {
+        name: "Estadisticas",
+        url: "estadisticas"
+      },
+      {
+        name:"Reportes",
+        url:"/app-reportes"  // Asegúrate de que esta ruta coincide con la configurada en el enrutador
+      }
+    ],
     badge: {
       color: 'info',
       text: 'NEW',
     },
   },
+  
 ];
 
   

@@ -22,6 +22,7 @@ import { MatDialogModule } from "@angular/material/dialog"
 import { MatPaginator } from '@angular/material/paginator';
 
 
+import { ReportesModule } from './views/reportes/reportes.module'; // Asegúrate de que la ruta es correcta
 
 @NgModule({
     exports: [
@@ -44,7 +45,8 @@ import { MatPaginator } from '@angular/material/paginator';
         MatNativeDateModule,
         MatRadioModule,
         MatCheckboxModule,
-        MatDialogModule
+        MatDialogModule,
+        
     ]
 })
 export class MaterialModule { }
